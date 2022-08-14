@@ -1,19 +1,24 @@
 from models.quartos import Quartos
 from base_model.quarto_model import QuartoModel
-#from model_base.candidato_model import canditato_model
 
-#candidatos = canditato_model(3)
-#conectar = py().database.insert_many(candidatos)
-# conectar = list(py().database.find())
-# print(conectar)
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-quartos = Quartos().conexao
-lista_quartos = []
-for x in range(1,11):
-    modelo_quartos = QuartoModel(str(x), 0, 0, 0).modelo_quarto()
-    lista_quartos.append(modelo_quartos)
-criar_quartos = quartos.insert_many(lista_quartos)
+from routes import admin
+from routes import user
 
-#print(criar_quartos)
-mostrar_quartos = list(quartos.find())
-print(f'\n{mostrar_quartos}\n')
+
+app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(admin.router)
+app.include_router(user.router)
