@@ -28,7 +28,7 @@ class Quartos(Pymongo):
             return busca
         except Exception as e:
             print(e)
-            return e
+            return []
     
     def buscar_quarto_por_numero(self, numero_quarto:str):
         numero_quarto = str(numero_quarto)

@@ -12,10 +12,10 @@ async def buscar_todos_quartos():
     """Buscar todos os quartos existentes na collections
     """
     busca = quartos.buscar_todos_quartos()
-    if isinstance(busca,list) == False:
+    if len(busca) == 0:
         return JSONResponse(
             status_code=400,
-            content=busca,
+            content={"ERRO": "Não existem quartos cadastrados."},
         )
     return JSONResponse(status_code=200, content=busca)
 
