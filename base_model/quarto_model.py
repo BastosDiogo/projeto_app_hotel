@@ -19,7 +19,8 @@ class QuartoModel():
                      "numero_camas_criancas" : self.camas_criancas,
                      "valor_diaria" : self.valor_diaria,
                      "permite_pets" : self.permite_pets,
-                     "historico_aluguel" : ''
+                     "historico_aluguel" : '',
+                     "periodo_ocupacao" : {'inicio': '', 'fim' : ''},
                 }
 
         return payloard
