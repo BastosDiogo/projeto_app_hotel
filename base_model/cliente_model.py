@@ -1,4 +1,4 @@
-class Cliente():
+class ClienteModel():
     def __init__(self, nome:str, idade:int, cpf:str):
         self._nome = nome
         self._idade = idade
