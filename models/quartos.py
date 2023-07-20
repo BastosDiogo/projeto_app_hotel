@@ -39,3 +39,21 @@ class Quartos(Pymongo):
         except Exception as e:
             print(e)
             return []
+
+
+    def editar_quartos(self, payload: dict):
+        update = {}
+        for chave, valor in payload.items():
+            update[chave] = valor
+        update.pop('numero_quarto')
+
+        try:
+            self.conexao.update_one(
+                {"numero_quarto": payload['numero_quarto']},
+                {"$set": update}
+            )
+            return True
+
+        except Exception as erro:
+            print(erro)
+            return False
