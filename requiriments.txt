@@ -12,5 +12,4 @@ uvicorn==0.17.6
 XlsxWriter==3.0.3
 fastapi==0.100.0
 uvicorn==0.17.6
---upgrade pydantic
 pymongo[srv]
