@@ -1,3 +1,6 @@
+from pydantic import BaseModel
+from typing import Optional
+
 class QuartoModel():
     def __init__(self,
                  numero_quarto: str,
@@ -24,3 +27,9 @@ class QuartoModel():
                 }
 
         return payloard
+
+class EdicaoQuarto(BaseModel):
+    numero_camas_adultos: Optional[int] = 0
+    numero_camas_criancas: Optional[int] = 0
+    valor_diaria: Optional[float] = 0
+    permite_pets: Optional[bool] = False
