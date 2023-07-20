@@ -1,5 +1,6 @@
 from mongo.conexao import Pymongo
-from base_model.cliente_model import ClienteModel
+from uuid import uuid1
+#from base_model.cliente_model import ClienteModel
 
 class Cliente(Pymongo):
     def __init__(self) -> None:
@@ -10,11 +11,41 @@ class Cliente(Pymongo):
     def conexao(self):
         return self._conexao
     
-    def criar_cliente(self, nome:str, idade:int, cpf:str, dependentes:list=[]):
-        cliente = ClienteModel(nome, idade, cpf)
-        if len(dependentes) != 0:
-            cliente.add_dependentes(dependentes)
-        cliente = cliente.modelo_cliente()
+
+    def verificar_parametros(self, payload:dict):
+        parametros = {
+            "nome": True if payload.get('nome','') != '' else 'Nome inválido',
+            "idade": True if payload.get('idade', 0) > 18 else 'Idade inferior a 18 anos.',
+        }
+        
+        if payload.get('cpf'):
+            cpf_existente = list(
+                self.conexao.find({"cpf": payload.get('cpf')},{"_id":0, "id":1, "cpf":1})
+            )
+            cpf = 'CPF existente na base de dados.' if len(cpf_existente) !=0 else True
+
+        else:
+            cpf = 'CPF não existente.'
+
+        parametros['cpf'] = cpf
+
+        resposta = {}
+        for chave, valor in parametros.items():
+            if isinstance(valor, str):
+                resposta[chave] = valor
+
+        return resposta
+
+
+    def criar_cliente(self, payload: dict):
+        cliente = {
+            "id": str(uuid1()),
+            "nome": str(payload['nome']).upper(),
+            "idade": int(payload['idade']),
+            "cpf": payload['cpf'],
+            "pets": payload.get('pets', []),
+            "dependentes": payload.get('dependentes', [])
+        }
         
         try:
             self.conexao.insert_one(cliente)
