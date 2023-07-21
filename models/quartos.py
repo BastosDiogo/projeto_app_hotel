@@ -57,3 +57,24 @@ class Quartos(Pymongo):
         except Exception as erro:
             print(erro)
             return False
+
+
+    def criar_quarto(self, payload: dict):
+        numeros_dos_quartos = list(self.conexao.distinct('numero_quarto',{"status": "ativo"}))
+        if len(numeros_dos_quartos) == 0:
+            numero_ultimo_quarto = 1
+        else:
+            numeros_dos_quartos.sort()
+            numero_ultimo_quarto = str(int(numeros_dos_quartos[-1]) + 1)
+
+        update_organizado = {"numero_quarto": numero_ultimo_quarto,"status":"ativo"}
+        for chave, valor in payload.items():
+            update_organizado[chave] = valor
+
+        try:
+            self.conexao.insert_one(update_organizado)
+            return True
+
+        except Exception as erro:
+            print(erro)
+            return False
