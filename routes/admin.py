@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from models.quartos import Quartos
-from base_model.quarto_model import EdicaoQuarto
+from base_model.quarto_model import EdicaoQuarto, CriarQuarto
 
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -33,7 +33,21 @@ async def buscar_quarto_por_numero(numero_quarto:str):
     return JSONResponse(status_code=200, content=busca)
 
 
-@router.post("/criar-quarto")
+@router.post("/criar-novo-quarto")
+async def criar_quartos(data: CriarQuarto):
+    """Cria um quarto na base de dados.
+    """
+    payload = data.dict()
+    criar = quartos.criar_quarto(payload)
+    if criar == False:
+        return JSONResponse(
+            status_code=400,
+            content={"ERRO": 'Não foi possível criar o quarto, verifique os parâmetros passados.'},
+        )
+    return JSONResponse(status_code=200, content='Quarto criado com sucesso')
+
+
+@router.post("/criar-quartos-exemplos")
 async def criar_quartos_exemplos():
     """Criar quartos na base de dados.
     """
@@ -65,7 +79,7 @@ async def editar_quartos(numero_quarto:str, edicao: EdicaoQuarto):
 
 
 
-@router.post("/deletar-quarto")
+@router.delete("/deletar-quartos")
 async def deletar_quartos():
     """Deletar quartos.
     """
