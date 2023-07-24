@@ -1,7 +1,7 @@
 annotated-types==0.5.0
 lxml==4.8.0
 openpyxl==3.0.9
-pandas==1.4.1
+pandas
 pika==1.1.0
 pydantic==2.0.3
 pymongo==3.12.0
